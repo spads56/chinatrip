@@ -320,6 +320,61 @@ select.fi{cursor:pointer}
   :root{--bg:#fff;--surf:#f5f5f5;--surf2:#ececec;--brd:#ddd;--brd2:#ccc;
     --gold:#7a5c1e;--txt:#111;--txtm:#444;--txtd:#888}
 }
+
+/* COUNTDOWN */
+.cntdwn{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.cd-box{background:rgba(201,166,90,.1);border:1px solid rgba(201,166,90,.25);border-radius:8px;
+  padding:6px 10px;min-width:52px;text-align:center}
+.cd-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:var(--gold);line-height:1.1}
+.cd-l{font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txtd);margin-top:1px}
+.cd-msg{font-size:.72rem;color:var(--green);letter-spacing:.04em;margin-top:6px}
+
+/* WEATHER CARDS */
+.wx-section{margin-bottom:18px}
+.wx-title{font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.wx-title::after{content:'';flex:1;height:1px;background:rgba(201,166,90,.2)}
+.wx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.wx-card{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);padding:11px 12px;position:relative;overflow:hidden}
+.wx-card::before{content:'';position:absolute;inset:0;opacity:.06;background:var(--wx-bg,var(--blue));pointer-events:none}
+.wx-city{font-size:.7rem;font-weight:700;color:var(--txt);margin-bottom:3px}
+.wx-dates{font-size:.58rem;color:var(--txtd);margin-bottom:6px;letter-spacing:.03em}
+.wx-main{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wx-icon{font-size:1.6rem;line-height:1}
+.wx-temps{display:flex;flex-direction:column}
+.wx-hi{font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--coral)}
+.wx-lo{font-family:var(--fm);font-size:.75rem;color:var(--blue)}
+.wx-desc{font-size:.62rem;color:var(--txtm);line-height:1.4}
+.wx-rain{font-size:.6rem;color:var(--blue);margin-top:3px}
+.wx-loading{font-size:.65rem;color:var(--txtd);text-align:center;padding:16px;grid-column:1/-1;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.wx-err{font-size:.65rem;color:var(--txtd);text-align:center;padding:16px;grid-column:1/-1}
+
+/* RESERVATION DASHBOARD */
+.res-dash{background:var(--surf);border:1px solid var(--brd);border-radius:var(--r);padding:13px 15px;margin-bottom:18px}
+.res-title{font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.res-title::after{content:'';flex:1;height:1px;background:rgba(201,166,90,.2)}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:7px}
+.res-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;border:1px solid var(--brd)}
+.res-item.ok{background:rgba(61,168,118,.07);border-color:rgba(61,168,118,.22)}
+.res-item.ko{background:rgba(232,160,48,.06);border-color:rgba(232,160,48,.22)}
+.res-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.res-item.ok .res-dot{background:var(--green)}
+.res-item.ko .res-dot{background:var(--amber)}
+.res-label{font-size:.7rem;color:var(--txtm);flex:1;line-height:1.3}
+.res-item.ok .res-label{color:var(--txt)}
+
+/* METRO SECTION */
+.metro-sec{margin-top:12px}
+.metro-title{font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.metro-title::after{content:'';flex:1;height:1px;background:rgba(74,158,218,.2)}
+.metro-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.metro-item{background:rgba(21,37,64,.7);border:1px solid rgba(36,61,92,.9);border-radius:7px;padding:8px 10px}
+.metro-lbl{font-size:.56rem;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);margin-bottom:3px;font-weight:700}
+.metro-val{font-size:.72rem;color:var(--txtm);line-height:1.45}
+.metro-item.full{grid-column:1/-1}
+.metro-line{display:inline-flex;align-items:center;gap:4px;background:rgba(74,158,218,.12);border:1px solid rgba(74,158,218,.25);border-radius:4px;padding:2px 6px;font-size:.62rem;color:var(--blue);margin:2px 2px 0 0}
+.inter-city{background:rgba(217,106,69,.07);border:1px solid rgba(217,106,69,.2);border-radius:var(--r);padding:9px 12px;margin-top:8px;font-size:.73rem;color:var(--txtm);line-height:1.6}
+.inter-city strong{color:var(--coral)}
 </style>
 </head>
 <body>
@@ -337,6 +392,7 @@ select.fi{cursor:pointer}
       <span class="chip bl">🏨 Shenzhen réservé</span>
     </div>
     <div class="save-ts" id="save-ts"></div>
+    <div class="cntdwn" id="cntdwn"></div>
   </div>
 </header>
 
@@ -351,6 +407,8 @@ select.fi{cursor:pointer}
   <div class="pan on" id="pan-prog">
     <div class="sh"><div class="sh-ti">Vue d'ensemble</div>
       <div class="sh-de">Shenzhen · HK · Foshan · Zhangjiajie · Chongqing · Chengdu · Pékin</div></div>
+    <div class="res-dash"><div class="res-title">Statut des réservations</div><div class="res-grid" id="res-grid"></div></div>
+    <div class="wx-section"><div class="wx-title">Météo des étapes</div><div class="wx-grid" id="wx-grid"><div class="wx-loading">Chargement météo…</div></div></div>
     <div class="fb">
       <div class="fl"><div class="fl-lb">✈ Aller · Confirmé</div>
         <div class="fl-rt">Paris CDG → Shenzhen</div>
@@ -548,6 +606,7 @@ tips:[
   {ico:'💳',cat:'Paiements',items:[{lbl:'Alipay',desc:'Indispensable · configurer AVANT le départ'},{lbl:'WeChat Pay',desc:'Alternative Alipay · messages + paiements'},{lbl:'Carte internationale',desc:'Visa/Mastercard · hôtels et certains restos'},{lbl:'Cash CNY',desc:'Garder ~500¥ de secours · changer à l\'aéroport'},{lbl:'Hong Kong HKD',desc:'Devise séparée · cartes très bien acceptées · Octopus Card'}]},
   {ico:'📱',cat:'Applications',items:[{lbl:'WeChat',desc:'Messagerie + paiements + mini-apps — ESSENTIEL'},{lbl:'Alipay',desc:'Paiements · QR codes · restaurants · transports'},{lbl:'Baidu Maps',desc:'Cartographie Mainland (Google bloqué sans VPN)'},{lbl:'Google Maps',desc:'Hong Kong uniquement ou via VPN'},{lbl:'Trip.com',desc:'Hôtels + trains en anglais · simple'}]},
   {ico:'📶',cat:'Connectivité',items:[{lbl:'VPN',desc:'⚠️ Installer AVANT le départ — Google/WhatsApp/Insta bloqués'},{lbl:'SIM Mainland',desc:'China Mobile/Unicom · data + appels · à l\'arrivée'},{lbl:'eSIM HK',desc:'Pour la journée Hong Kong · activer la veille'},{lbl:'Roaming',desc:'Souvent très cher · préférer une SIM locale'}]},
+  {ico:'🆘',cat:'Urgences & Numéros utiles',items:[{lbl:'Police',desc:'110 · urgence Mainland Chine'},{lbl:'SAMU / Ambulance',desc:'120 · Chine continentale'},{lbl:'Pompiers',desc:'119 · Chine continentale'},{lbl:'HK Urgences',desc:'999 · Police / Pompiers / Ambulance Hong Kong'},{lbl:'Ambassade France — Pékin',desc:'+86 10 8531 2200 · ouvert 24h/24 pour urgences consulaires'},{lbl:'Consulat France — Canton',desc:'+86 20 8330 0405 · couvre Shenzhen, Foshan, Guangdong'},{lbl:'Consulat France — HK',desc:'+852 3196 6100 · urgences consulaires'},{lbl:'Numéro d\'urgence EU',desc:'+33 1 77 67 67 67 (MFA Paris, 24h/24)'},{lbl:'Assurance voyage',desc:'Conserver le numéro assistance dans la poche · n° au dos de votre carte bleue'},{lbl:'Hôpital recommandé SZ',desc:'Shenzhen People\'s Hospital · Jiefang Lu · urgences 24h/24'}]},
 ],
 finance:[
   {date:'6 mai',city:'Paris',hotel:0,tr:0,meals:30,act:0,misc:20,notes:'Départ CDG'},
@@ -567,6 +626,72 @@ finance:[
   {date:'21 mai',city:'Pékin',hotel:130,tr:20,meals:50,act:60,misc:15,notes:'Grande Muraille'},
   {date:'22 mai',city:'Pékin→Paris',hotel:0,tr:40,meals:40,act:0,misc:20,notes:'Retour CDG 20:05'},
 ]};
+
+// ═══════════════════════ METRO & TRANSPORT DATA ═══════════════════════
+const METRO={
+  'Shenzhen':{app:'Shenzhen Metro · Baidu Maps',lines:[
+    {n:'L1',note:'Futian ↔ Luohu (axe principal, hôtel)'},
+    {n:'L1/L4',note:'Huaqiang Road → marché électronique'},
+    {n:'L1',note:'Lianhuashan · Convention Center'},
+    {n:'L1',note:'Civic Center → Ping An Finance Center'}
+  ],intercity:null},
+  'Hong Kong':{app:'MTR Mobile · Octopus Card',lines:[
+    {n:'HSR',note:'Futian → West Kowloon · 14–33 min · arriver 60 min avant'},
+    {n:'Island Line',note:'Central · Sheung Wan · HKU'},
+    {n:'Tsuen Wan',note:'Tsim Sha Tsui (TST)'},
+    {n:'Peak Tram',note:'Garden Road → Victoria Peak'}
+  ],intercity:null},
+  'Foshan':{app:'Foshan Metro · Baidu Maps · Didi',lines:[
+    {n:'GZ-FS L2',note:'Zumiao station → Temple ancestral'},
+    {n:'GZ-FS L3',note:'Shiwan → Village céramique'},
+    {n:'GZ-FS L1',note:'Lingnan Tiandi → centre'},
+  ],intercity:{from:'Shenzhen',info:'Shenzhen → Foshan : Bus intercity ~1h30 · ou Didi ~35 km · 50–80 CNY · ou Métro interconnecté via Guangzhou'}},
+  'Shenzhen → Foshan':{app:'Didi · Bus intercity',lines:[
+    {n:'Bus',note:'Shenzhen → Guangzhou South · ~1h'},
+    {n:'Metro',note:'Guangzhou → Foshan interconnecté'},
+  ],intercity:{from:'Shenzhen',info:'Option directe : Didi Shenzhen → Foshan ~45–90 min selon trafic · 50–80 CNY'}},
+  'Zhangjiajie':{app:'Baidu Maps · pas de métro',lines:[
+    {n:'Bus public',note:'Gare → Parc National (Forest Park) ~30 min'},
+    {n:'Bus public',note:'Gare → Tianmen Mountain ~15 min'},
+    {n:'Navette interne',note:'Incluse dans le billet parc · Yuanjiajie ↔ Bailong ↔ Yangjiajie'}
+  ],intercity:{from:'Foshan/Guangzhou',info:'Vol Guangzhou → Zhangjiajie ~1h30 · ou Train G depuis Changsha ~2h · Réserver sur Trip.com'}},
+  'Chongqing':{app:'Chongqing Rail Transit App · Baidu Maps',lines:[
+    {n:'L1/L6',note:'Xiaoshizi → Hongya Cave (洪崖洞)'},
+    {n:'L2',note:'Liziba (train traverse l\'immeuble! 📸)'},
+    {n:'L3',note:'Ciqikou Ancient Town'},
+    {n:'L1',note:'Chaotianmen Pier → croisière Yangtsé'}
+  ],intercity:{from:'Zhangjiajie',info:'Vol Zhangjiajie → Chongqing ~1h · ou Train ~6–8h (paysages montagne) · sur Trip.com'}},
+  'Chengdu':{app:'Chengdu Metro App · Baidu Maps',lines:[
+    {n:'L3',note:'Gaosheng Qiao → Jinli Street + Temple Wuhou'},
+    {n:'L1/L4',note:'Tianfu Square ↔ Gare Sud (HSR)'},
+    {n:'Bus 702',note:'Gare Chengdu Nord → Base pandas ~30 min'}
+  ],intercity:{from:'Chongqing',info:'HSR G-train Chongqing → Chengdu ~1h20 · ~100 CNY · départs toutes les 20 min'}},
+  'Pékin':{app:'Beijing Subway App · Baidu Maps · Yikatong Card',lines:[
+    {n:'L1',note:'Tiananmen Est/Ouest → Cité Interdite · Place'},
+    {n:'L2',note:'Boucle historique (Qianmen, Chongwenmen)'},
+    {n:'L5',note:'Tiantandongmen → Temple du Ciel'},
+    {n:'L6',note:'Nanluoguxiang → Hutongs'},
+    {n:'Airport Express',note:'Dongzhimen ↔ Capital Airport · 16 CNY · 20 min'}
+  ],intercity:{from:'Chengdu',info:'Vol Chengdu → Pékin ~2h30 · ou HSR nuit ~10h · Didi fonctionne bien à Pékin'}},
+  'Pékin → Paris':{app:'Capital Airport Terminal 3',lines:[
+    {n:'Airport Express',note:'Dongzhimen → T3 Airport · 16 CNY · 20 min'},
+    {n:'Didi',note:'Hôtel → Airport · ~45–60 min · départ 07:30 !!'}
+  ],intercity:null}
+};
+
+// ─── Fix old Unsplash URLs ───
+function fixImgUrl(url,w=600,h=220){
+  if(!url)return'';
+  // source.unsplash.com/featured/... (broken) → picsum with stable seed
+  if(url.includes('source.unsplash.com/featured/')){
+    const seed=url.replace(/https?:\/\/source\.unsplash\.com\/featured\/\d+x\d+\?/,'').replace(/[^a-z0-9]/gi,'-').slice(0,30);
+    return`https://picsum.photos/seed/${seed}/${w}/${h}`;
+  }
+  // source.unsplash.com/PHOTO_ID/WxH → images.unsplash.com
+  const m=url.match(/source\.unsplash\.com\/([A-Za-z0-9_-]+)\/(\d+)x(\d+)/);
+  if(m){return`https://images.unsplash.com/photo-${m[1]}?auto=format&fit=crop&w=${m[2]}&h=${m[3]}&q=80`}
+  return url;
+}
 
 // ═══════════════════════ STATE ═══════════════════════
 const SK='china2026_v4';  // v4: forces fresh load with visual+top5
@@ -672,9 +797,121 @@ function toggleEdit(){
 }
 
 // ═══════════════════════ RENDER ═══════════════════════
-function renderAll(){renderHeader();renderTL();renderAcc();renderTips();renderFin()}
+function renderAll(){renderHeader();renderTL();renderAcc();renderTips();renderFin();renderResDash();renderCountdown()}
 
 function e(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ─── COUNTDOWN ───
+function renderCountdown(){
+  const dep=new Date('2026-05-06T23:30:00');
+  const now=new Date();
+  const diff=dep-now;
+  const el=document.getElementById('cntdwn');
+  if(!el)return;
+  if(diff<=0){el.innerHTML='<div class="cd-msg">✈️ Bon voyage Alexandre !</div>';return}
+  const d=Math.floor(diff/864e5);
+  const h=Math.floor((diff%864e5)/36e5);
+  const m=Math.floor((diff%36e5)/6e4);
+  const s=Math.floor((diff%6e4)/1e3);
+  el.innerHTML=`
+    <div class="cd-box"><div class="cd-n">${d}</div><div class="cd-l">Jours</div></div>
+    <div class="cd-box"><div class="cd-n">${String(h).padStart(2,'0')}</div><div class="cd-l">Heures</div></div>
+    <div class="cd-box"><div class="cd-n">${String(m).padStart(2,'0')}</div><div class="cd-l">Min</div></div>
+    <div class="cd-box"><div class="cd-n">${String(s).padStart(2,'0')}</div><div class="cd-l">Sec</div></div>`;
+}
+setInterval(renderCountdown,1000);
+
+// ─── RESERVATION DASHBOARD ───
+const RES_ITEMS=[
+  {label:'Vol aller AF116 CDG→SZX',ok:true},
+  {label:'Vol retour AF8446 PEK→CDG',ok:true},
+  {label:'Hôtel Shenzhen (Futian)',ok:true},
+  {label:'HSR Futian → Hong Kong',ok:false},
+  {label:'Hôtel Foshan (4 nuits)',ok:false},
+  {label:'Fournisseurs Foshan',ok:false},
+  {label:'Vol/Train → Zhangjiajie',ok:false},
+  {label:'Hôtel Zhangjiajie',ok:false},
+  {label:'Billet Glass Bridge (quota!)',ok:false},
+  {label:'Vol/Train → Chongqing',ok:false},
+  {label:'Hôtel Chongqing',ok:false},
+  {label:'Croisière Yangtsé (optionnel)',ok:false},
+  {label:'HSR Chongqing → Chengdu',ok:false},
+  {label:'Vol/Train → Pékin',ok:false},
+  {label:'Hôtel Pékin (proche aéroport)',ok:false},
+  {label:'Billet Cité Interdite (quota!)',ok:false},
+];
+function renderResDash(){
+  const g=document.getElementById('res-grid');
+  if(!g)return;
+  g.innerHTML=RES_ITEMS.map(r=>`
+    <div class="res-item ${r.ok?'ok':'ko'}">
+      <div class="res-dot"></div>
+      <div class="res-label">${r.ok?'✓ ':'⏳ '}${e(r.label)}</div>
+    </div>`).join('');
+}
+
+// ─── WEATHER (Open-Meteo — free, no API key) ───
+const WX_CITIES=[
+  {name:'Shenzhen',lat:22.5431,lon:114.0579,tz:'Asia/Shanghai',dates:'8–10 mai',color:'var(--coral)'},
+  {name:'Hong Kong',lat:22.3193,lon:114.1694,tz:'Asia/Hong_Kong',dates:'9 mai',color:'var(--blue)'},
+  {name:'Foshan',lat:23.0218,lon:113.1215,tz:'Asia/Shanghai',dates:'10–14 mai',color:'var(--gold)'},
+  {name:'Zhangjiajie',lat:29.1175,lon:110.4794,tz:'Asia/Shanghai',dates:'~15–16 mai',color:'var(--green)'},
+  {name:'Chongqing',lat:29.5630,lon:106.5516,tz:'Asia/Shanghai',dates:'~17–18 mai',color:'var(--amber)'},
+  {name:'Chengdu',lat:30.6598,lon:104.0633,tz:'Asia/Shanghai',dates:'~19 mai',color:'var(--txtm)'},
+  {name:'Pékin',lat:39.9042,lon:116.4074,tz:'Asia/Shanghai',dates:'20–22 mai',color:'var(--blue)'},
+];
+const WX_ICON={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',85:'🌨️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const WX_DESC={0:'Ciel dégagé',1:'Peu nuageux',2:'Partiellement nuageux',3:'Couvert',45:'Brouillard',48:'Brouillard givrant',51:'Bruine légère',53:'Bruine',55:'Bruine forte',61:'Pluie légère',63:'Pluie',65:'Forte pluie',71:'Neige légère',73:'Neige',75:'Forte neige',80:'Averses',81:'Averses',82:'Fortes averses',95:'Orage',96:'Orage avec grêle',99:'Orage violent'};
+
+async function fetchWx(city){
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&current_weather=true&timezone=${encodeURIComponent(city.tz)}&forecast_days=16`;
+  const r=await fetch(url);
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  return r.json();
+}
+
+function wxCard(city,data){
+  const cw=data.current_weather;
+  const icon=WX_ICON[cw.weathercode]||'🌡️';
+  const desc=WX_DESC[cw.weathercode]||'';
+  // Find avg forecast for trip period (days 14-16 = May 5-7 from April 20)
+  const daily=data.daily;
+  const fDates=daily.time||[];
+  // Take last available days (closest to trip start)
+  const last=Math.min(fDates.length-1,15);
+  const hiMax=Math.round(Math.max(...daily.temperature_2m_max.slice(Math.max(0,last-3),last+1)));
+  const loMin=Math.round(Math.min(...daily.temperature_2m_min.slice(Math.max(0,last-3),last+1)));
+  const rainAvg=(daily.precipitation_sum.slice(Math.max(0,last-3),last+1).reduce((a,b)=>a+(b||0),0)/4).toFixed(1);
+  const lastDate=fDates[last]?new Date(fDates[last]).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}):'';
+  return`<div class="wx-card" style="--wx-bg:${city.color}">
+    <div class="wx-city">${e(city.name)}</div>
+    <div class="wx-dates">Étape : ${e(city.dates)}</div>
+    <div class="wx-main">
+      <div class="wx-icon">${icon}</div>
+      <div class="wx-temps">
+        <div class="wx-hi">↑ ${hiMax}°C</div>
+        <div class="wx-lo">↓ ${loMin}°C</div>
+      </div>
+    </div>
+    <div class="wx-desc">${e(desc)}</div>
+    <div class="wx-rain">🌧 ~${rainAvg}mm/j · Actuel ${Math.round(cw.temperature)}°C · ${Math.round(cw.windspeed)}km/h</div>
+    <div style="font-size:.55rem;color:var(--txtd);margin-top:3px">Prévision proche du ${lastDate}</div>
+  </div>`;
+}
+
+async function loadWeather(){
+  const grid=document.getElementById('wx-grid');
+  if(!grid)return;
+  try{
+    const results=await Promise.allSettled(WX_CITIES.map(c=>fetchWx(c)));
+    grid.innerHTML=results.map((r,i)=>{
+      if(r.status==='fulfilled')return wxCard(WX_CITIES[i],r.value);
+      return`<div class="wx-card"><div class="wx-city">${e(WX_CITIES[i].name)}</div><div class="wx-err">Données indisponibles</div></div>`;
+    }).join('');
+  }catch(err){
+    grid.innerHTML=`<div class="wx-err">Météo indisponible (vérifier la connexion)</div>`;
+  }
+}
 
 // ─── TIMELINE ───
 function renderTL(){
@@ -714,7 +951,7 @@ function renderAcc(){
       const v=d.visual;
       const fallback=`linear-gradient(135deg,#071828,#0a2d4a)`;
       body+=`<div class="cv">
-        <img class="cv-img" src="${v.photo||''}" loading="lazy" onerror="this.style.display='none';this.closest('.cv').style.background='linear-gradient(135deg,#071828,#0a2d4a)'" alt="${e(d.city)}">
+        <img class="cv-img" src="${fixImgUrl(v.photo||'',700,220)}" loading="lazy" onerror="this.style.display='none';this.closest('.cv').style.background='linear-gradient(135deg,#071828,#0a2d4a)'" alt="${e(d.city)}">
         <div class="cv-overlay"></div>
         <div class="cv-emoji">${v.emoji||''}</div>
         <div class="cv-label">${e(d.city||v.label)}</div>
@@ -730,7 +967,7 @@ function renderAcc(){
         const isObj=typeof item==='object';
         const title=isObj?item.t:item;
         const detail=isObj?`<div class="t5-det-in">
-          ${item.photo?`<div class="t5-ph-wrap"><img class="t5-ph" src="${item.photo}" loading="lazy" onerror="this.parentNode.style.display='none'" alt="${e(title)}"></div>`:''}
+          ${item.photo?`<div class="t5-ph-wrap"><img class="t5-ph" src="${fixImgUrl(item.photo,600,220)}" loading="lazy" onerror="this.parentNode.style.display='none'" alt="${e(title)}"></div>`:''}
           <div class="t5-grid">
             ${item.price?`<div class="t5-gi"><div class="t5-gl">💶 Prix</div><div class="t5-gv">${e(item.price)}</div></div>`:''}
             ${item.dur?`<div class="t5-gi"><div class="t5-gl">⏱ Durée</div><div class="t5-gv">${e(item.dur)}</div></div>`:''}
@@ -767,6 +1004,15 @@ function renderAcc(){
     }
     if(d.bullets&&d.bullets.length){
       body+=`<ul class="bul" style="margin-top:12px">${d.bullets.map(b=>`<li><span class="dot">◆</span><span>${e(b)}</span></li>`).join('')}</ul>`;
+    }
+
+    // Metro / transport section
+    const mt=METRO[d.city]||METRO[(d.city||'').split('→')[0].trim()];
+    if(mt){
+      body+=`<div class="metro-sec"><div class="metro-title">🚇 Transports & Métro</div><div class="metro-grid">
+        <div class="metro-item full"><div class="metro-lbl">📱 App recommandée</div><div class="metro-val">${e(mt.app)}</div></div>
+        ${mt.lines.map(l=>`<div class="metro-item"><div class="metro-lbl"><span class="metro-line">${e(l.n)}</span></div><div class="metro-val">${e(l.note)}</div></div>`).join('')}
+      </div>${mt.intercity?`<div class="inter-city">🚄 <strong>Connexion :</strong> ${e(mt.intercity.info)}</div>`:''}</div>`;
     }
 
     return `<div class="ai ${iC(d)}" id="a${i}">
@@ -1046,7 +1292,7 @@ document.addEventListener('pointerup',onPU);
 document.addEventListener('pointercancel',onPU);
 
 // ═══════════════════════ INIT ═══════════════════════
-load();renderAll();
+load();renderAll();loadWeather();
 </script>
 </body>
 </html>
